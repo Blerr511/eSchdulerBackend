@@ -8,7 +8,8 @@
 		"target": "es6",
 		"outDir": "./dist",
 		"baseUrl": "src" /* This is where all your code is*/,
-		"typeRoots": ["./src/@types", "./node_modules/@types", "@types"]
+		"typeRoots": ["./src/@types", "./node_modules/@types", "@types"],
+		"resolveJsonModule": true
 	},
 	"ts-node": {
 		"files": true

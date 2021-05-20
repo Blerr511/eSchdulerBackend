@@ -25,6 +25,15 @@ export class Scheduler {
 	};
 
 	public static init(): void {
+		console.log('init');
+		admin.database().goOnline();
+		admin
+			.database()
+			.ref('/')
+			.get()
+			.then(data => {
+				console.log(data.val());
+			});
 		this.scheduleModel.ref().on('child_added', this.handleSchedule);
 
 		this.scheduleModel.ref().on('child_removed', this.handleRemoveSchedule);
