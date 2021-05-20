@@ -26,11 +26,7 @@ class App {
 				clientEmail: cert.client_email,
 				privateKey: cert.private_key,
 				projectId: cert.project_id
-			}),
-			databaseAuthVariableOverride: {
-				provider: 'anonymous',
-				uid: 'e80cd131-b04a-4a6e-ab06-f84bcd5a72f7'
-			}
+			})
 		});
 	}
 
