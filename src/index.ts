@@ -5,4 +5,6 @@ config();
 
 const app = new App();
 
-app.init();
+app.init().then(({port}) => {
+	console.log(`App listening port ${port}.`);
+});
