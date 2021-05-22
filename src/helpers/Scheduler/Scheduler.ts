@@ -4,6 +4,7 @@ import {Database} from 'helpers/DatabaseController';
 import {ISchedule, ScheduleController} from 'helpers/DatabaseController/ScheduleController';
 import {Messaging} from 'helpers/Messaging/Messaging.helper';
 import {getScheduleCroneTime} from 'helpers/util';
+import moment from 'moment';
 
 export class Scheduler {
 	private static get scheduleModel(): ScheduleController {
@@ -15,7 +16,12 @@ export class Scheduler {
 		nodeSchedule.scheduleJob(schedule.uid, getScheduleCroneTime(schedule), async () => {
 			await Messaging.notifyStudent(schedule);
 			await Messaging.notifyLecturer(schedule);
-			if (schedule.singleTime) await Scheduler.scheduleModel.deleteById(schedule.uid);
+			if (schedule.singleTime) {
+				const date = moment().add({hour: schedule?.isExam ? 9 : 2});
+				nodeSchedule.scheduleJob(schedule.uid, date.toDate(), async () => {
+					await Scheduler.scheduleModel.deleteById(schedule.uid);
+				});
+			}
 		});
 	};
 
