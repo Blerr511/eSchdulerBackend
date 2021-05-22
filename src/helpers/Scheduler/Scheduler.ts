@@ -12,7 +12,6 @@ export class Scheduler {
 	}
 	private static handleSchedule = (ds: admin.database.DataSnapshot): void => {
 		const schedule = ds.val() as ISchedule;
-		console.log('scheduling on ', getScheduleCroneTime(schedule));
 		nodeSchedule.scheduleJob(schedule.uid, getScheduleCroneTime(schedule), async () => {
 			await Messaging.notifyStudent(schedule);
 			await Messaging.notifyLecturer(schedule);

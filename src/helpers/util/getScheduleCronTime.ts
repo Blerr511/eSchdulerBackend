@@ -6,7 +6,13 @@ export const getScheduleCroneTime = ({singleTime, date, time, weekDays = []}: IS
 	const m = Number(time.split(':')[1]);
 
 	const timer = moment().set({hour: h, minute: m}).subtract({minute: 2});
-	return singleTime
-		? new Date(Number(date))
-		: `${timer.get('minute')} ${timer.get('hour')} * * ${weekDays.join(',')}`;
+
+	if (singleTime) {
+		const _date = moment.unix(date / 1000);
+		_date.set({hour: h, minute: m});
+		_date.add({minute: 2});
+		return _date.toDate();
+	}
+
+	return `${timer.get('minute')} ${timer.get('hour')} * * ${weekDays.join(',')}`;
 };
