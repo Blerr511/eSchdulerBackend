@@ -12,6 +12,15 @@ export class Scheduler {
 	}
 	private static handleSchedule = (ds: admin.database.DataSnapshot): void => {
 		const schedule = ds.val() as ISchedule;
+		if (schedule.singleTime) {
+			const hour = Number(schedule.time.split(':')[0]);
+			const minute = Number(schedule.time.split(':')[1]);
+			const triggerTime = moment.unix(schedule.date / 1000).set({hour, minute});
+			if (triggerTime.isSameOrBefore(moment())) {
+				Scheduler.scheduleModel.deleteById(schedule.uid);
+				return;
+			}
+		}
 		nodeSchedule.scheduleJob(schedule.uid, getScheduleCroneTime(schedule), async () => {
 			await Messaging.notifyStudent(schedule);
 			await Messaging.notifyLecturer(schedule);
